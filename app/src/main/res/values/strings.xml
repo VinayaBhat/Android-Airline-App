@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">AirlineApp</string>
+    <string name="help_menu">Help</string>
+    <string name="README">README</string>
+    <string name="about">This is an Airline App. It has 4 functions:\n
+    1.Add new Airline and Flight information\n
+    2.Search for Airline\n
+    3.Search for Airline with Source and Destination\n
+    4.Pretty Print the Airline and Flight information\n
+        \n
+        Developer: Vinaya D Bhat
+    </string>
+    <string name="search">Search for flights</string>
+    <string name="airlinename">Enter Airline Name</string>
+    <string name="sourcename">Enter Source Airport</string>
+    <string name="destname">Enter Destination Airport</string>
+    <string name="addnewflight">Add New Flight</string>
+    <string name="SearchInfo">Search</string>
+    <string name="PP">Pretty Print Search</string>
+    <string name="FlightNum">Enter Flight Number</string>
+    <string name="Src">Enter Source Airport</string>
+    <string name="Dest">Enter Destination Airport</string>
+    <string name="DepDate">Enter Departure Date</string>
+    <string name="DepTime">Enter Departure Time</string>
+    <string name="ArrDate">Enter Arrival Date</string>
+    <string name="ArrTime">Enter Arrival Time</string>
+
+</resources>
