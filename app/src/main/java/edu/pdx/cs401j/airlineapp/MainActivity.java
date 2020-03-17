@@ -79,15 +79,9 @@ Context context=this;
                         if(AirportNames.getName(source)==null){
                             throw new Exception("Source Code not valid!");
                         }
-                        if(AirportNames.getName(destination)==null){
-                            throw new Exception("Destination Code not valid!");
-                        }
                         throw new Exception("Source Code is given but destination code is not given.");
                     }
                     else if(source.isEmpty() && !destination.isEmpty()) {
-                        if(AirportNames.getName(source)==null){
-                            throw new Exception("Source Code not valid!");
-                        }
                         if(AirportNames.getName(destination)==null){
                             throw new Exception("Destination Code not valid!");
                         }

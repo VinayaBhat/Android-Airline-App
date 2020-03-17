@@ -83,6 +83,7 @@ Context context=this;
             FileWriter writer = new FileWriter(file,true);
             writer.write(aname+";"+f1.getNumber()+";"+f1.getSource()+";"+f1.getDepartureString()+";"+f1.getDestination()+";"+f1.getArrivalString()+System.getProperty("line.separator"));
             writer.close();
+            Toast.makeText(this,"Flight has been added..",Toast.LENGTH_SHORT).show();
         }
     }
     @Override
