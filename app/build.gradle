@@ -1,9 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
+    jacoco {
+        version = '0.7.9'
+    }
     defaultConfig {
         applicationId "edu.pdx.cs401j.airlineapp"
         minSdkVersion 16
@@ -25,6 +28,11 @@ android {
             testCoverageEnabled = true
         }
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 
 }
 
@@ -32,11 +40,18 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'edu.pdx.cs410J:projects:Winter2020'
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testImplementation "org.robolectric:robolectric:4.3.1"
+
+    // Required -- JUnit 4 framework
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
 }
 

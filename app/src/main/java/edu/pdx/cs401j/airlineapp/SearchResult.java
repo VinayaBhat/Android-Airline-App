@@ -36,12 +36,13 @@ Context context=this;
         Airline a1 = null;
         ListView listView=(ListView)findViewById(R.id.ListViewID);
         for(String str:result){
+            try {
             String[] temp=str.split(";");
             a1=new Airline(temp[0]);
             Flight f1=new Flight(temp[1]);
             f1.setSource(temp[2]);
             String[] ddate=temp[3].split(" ");
-            try {
+
                 f1.setDeparture_time(ddate[0],ddate[1]+" "+ddate[2]);
                 f1.setDestination(temp[4]);
                 if(source!=null && destination!=null && source.equals(f1.getSource()) && destination.equals(f1.getDestination())) {
@@ -70,9 +71,9 @@ Context context=this;
             createAlert(e.getMessage());
         }
         if(finalresult.size()==0 && source==null && destination==null){
-            finalresult.add("No flights with Airline "+a1.getName());
+            finalresult.add("No flights with Airline ");
         }else if(finalresult.size()==0 && source!=null && destination!=null){
-            finalresult.add("No flights with Source "+source+" and destination "+destination+" from Airline "+a1.getName());
+            finalresult.add("No flights with Source "+source+" and destination "+destination+" from Airline ");
         }
 
 
