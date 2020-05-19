@@ -9,7 +9,7 @@ The HELP option redirects to a README page.
 #### To Run: In Android Studio, select Run Tests with coverage
 55 tests</br>
 Used Robolectric framework to write unit tests *( http://robolectric.org/ )*</br>
-Files Found under UITestCoverage
+Files Found under UnitTestCoverage
 
 
 
@@ -18,6 +18,6 @@ Files Found under UITestCoverage
 #### To Run: In Android Studio, select from gradle menu > reporting > combinedTestReportDebug. Files are found under app\build\reports\coverage\debug
 51 tests</br>
 Used Espresso framework to write UI tests. *(https://developer.android.com/training/testing/espresso)*</br>
-Files Found under UnitTestCoverage
+Files Found under UITestCoverage
 
 
