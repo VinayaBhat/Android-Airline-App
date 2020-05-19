@@ -15,7 +15,7 @@ Files Found under UnitTestCoverage
 
 ## Android Test (UI Test)
 ### Code Coverage: 94%
-#### To Run: In Android Studio, select from gradle menu > reporting > combinedTestReportDebug. Files are found under app\build\reports\coverage\debug
+#### To Run: In Android Studio, select from gradle menu > reporting > combinedTestReportDebug. Before starting tests make sure App emulator is running. Files are found under app\build\reports\coverage\debug
 51 tests</br>
 Used Espresso framework to write UI tests. *(https://developer.android.com/training/testing/espresso)*</br>
 Files Found under UITestCoverage
