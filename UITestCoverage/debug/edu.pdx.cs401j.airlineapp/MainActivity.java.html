@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainActivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs401j.airlineapp</a> &gt; <span class="el_source">MainActivity.java</span></div><h1>MainActivity.java</h1><pre class="source lang-java linenums">package edu.pdx.cs401j.airlineapp;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import edu.pdx.cs410J.AirportNames;
+
+
+<span class="fc" id="L26">public class MainActivity extends AppCompatActivity {</span>
+<span class="fc" id="L27">    Context context = this;</span>
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="fc" id="L31">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L32">        setContentView(R.layout.activity_main);</span>
+        //Adding New Flight
+<span class="fc" id="L34">        Button addflight = (Button) findViewById(R.id.AddNewFlight);</span>
+<span class="fc" id="L35">        addflight.setOnClickListener(new View.OnClickListener() {</span>
+
+            @Override
+            public void onClick(View v) {
+<span class="fc" id="L39">                Intent secondpage = new Intent(getApplicationContext(), AddFlightPage.class);</span>
+<span class="fc" id="L40">                startActivity(secondpage);</span>
+<span class="fc" id="L41">            }</span>
+        });
+        //Search Flight Given Airline Name,(Source and Destination are optional)
+<span class="fc" id="L44">        Button search = (Button) findViewById(R.id.SearchFlight);</span>
+<span class="fc" id="L45">        search.setOnClickListener(new View.OnClickListener() {</span>
+
+            public void onClick(View v) {
+<span class="fc" id="L48">                EditText airlinename = (EditText) findViewById(R.id.AirlineNameField);</span>
+<span class="fc" id="L49">                String aname = airlinename.getText().toString();</span>
+<span class="fc" id="L50">                EditText src = (EditText) findViewById(R.id.SourceField);</span>
+<span class="fc" id="L51">                String source = src.getText().toString();</span>
+<span class="fc" id="L52">                EditText dest = (EditText) findViewById(R.id.DestinationField);</span>
+<span class="fc" id="L53">                String destination = dest.getText().toString();</span>
+                try {
+<span class="fc bfc" id="L55" title="All 4 branches covered.">                    if (source.isEmpty() &amp;&amp; destination.isEmpty()) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                        if (aname.isEmpty()) {</span>
+<span class="fc" id="L57">                            throw new Exception(&quot;Airline Name not provided&quot;);</span>
+                        } else {
+<span class="fc" id="L59">                            readFile(aname, null, null, SearchFlight.class);</span>
+                        }
+<span class="fc bfc" id="L61" title="All 4 branches covered.">                    } else if (!source.isEmpty() &amp;&amp; !destination.isEmpty()) {</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">                        if (AirportNames.getName(source) == null) {</span>
+<span class="fc" id="L63">                            throw new Exception(&quot;Source Code not valid!&quot;);</span>
+                        }
+<span class="fc bfc" id="L65" title="All 2 branches covered.">                        if (AirportNames.getName(destination) == null) {</span>
+<span class="fc" id="L66">                            throw new Exception(&quot;Destination Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L68">                        readFile(aname, source, destination, SearchFlight.class);</span>
+<span class="pc bpc" id="L69" title="1 of 4 branches missed.">                    } else if (!source.isEmpty() &amp;&amp; destination.isEmpty()) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                        if (AirportNames.getName(source) == null) {</span>
+<span class="fc" id="L71">                            throw new Exception(&quot;Source Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L73">                        throw new Exception(&quot;Source Code is given but destination code is not given.&quot;);</span>
+<span class="pc bpc" id="L74" title="2 of 4 branches missed.">                    } else if (source.isEmpty() &amp;&amp; !destination.isEmpty()) {</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">                        if (AirportNames.getName(destination) == null) {</span>
+<span class="fc" id="L76">                            throw new Exception(&quot;Destination Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L78">                        throw new Exception(&quot;Source Code is not given but destination code is given.&quot;);</span>
+                    }
+<span class="fc" id="L80">                } catch (Exception e) {</span>
+<span class="fc" id="L81">                    createAlert(e.getMessage());</span>
+<span class="fc" id="L82">                }</span>
+<span class="fc" id="L83">            }</span>
+        });
+//Pretty Print Flight given Airline Name, (Source and Destination are optional)
+<span class="fc" id="L86">        Button pp = (Button) findViewById(R.id.PP);</span>
+<span class="fc" id="L87">        pp.setOnClickListener(new View.OnClickListener() {</span>
+
+            public void onClick(View v) {
+<span class="fc" id="L90">                EditText airlinename = (EditText) findViewById(R.id.AirlineNameField);</span>
+<span class="fc" id="L91">                String aname = airlinename.getText().toString();</span>
+<span class="fc" id="L92">                EditText src = (EditText) findViewById(R.id.SourceField);</span>
+<span class="fc" id="L93">                String source = src.getText().toString();</span>
+<span class="fc" id="L94">                EditText dest = (EditText) findViewById(R.id.DestinationField);</span>
+<span class="fc" id="L95">                String destination = dest.getText().toString();</span>
+                try {
+<span class="fc bfc" id="L97" title="All 4 branches covered.">                    if (source.isEmpty() &amp;&amp; destination.isEmpty()) {</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">                        if (aname.isEmpty()) {</span>
+<span class="fc" id="L99">                            throw new Exception(&quot;Airline Name not provided&quot;);</span>
+                        } else {
+<span class="fc" id="L101">                            readFile(aname, null, null, PrettyPrintSearchFlight.class);</span>
+                        }
+<span class="fc bfc" id="L103" title="All 4 branches covered.">                    } else if (!source.isEmpty() &amp;&amp; !destination.isEmpty()) {</span>
+<span class="fc bfc" id="L104" title="All 2 branches covered.">                        if (AirportNames.getName(source) == null) {</span>
+<span class="fc" id="L105">                            throw new Exception(&quot;Source Code not valid!&quot;);</span>
+                        }
+<span class="fc bfc" id="L107" title="All 2 branches covered.">                        if (AirportNames.getName(destination) == null) {</span>
+<span class="fc" id="L108">                            throw new Exception(&quot;Destination Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L110">                        readFile(aname, source, destination, PrettyPrintSearchFlight.class);</span>
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">                    } else if (!source.isEmpty() &amp;&amp; destination.isEmpty()) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                        if (AirportNames.getName(source) == null) {</span>
+<span class="fc" id="L113">                            throw new Exception(&quot;Source Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L115">                        throw new Exception(&quot;Source Code is given but destination code is not given.&quot;);</span>
+<span class="pc bpc" id="L116" title="2 of 4 branches missed.">                    } else if (source.isEmpty() &amp;&amp; !destination.isEmpty()) {</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">                        if (AirportNames.getName(destination) == null) {</span>
+<span class="fc" id="L118">                            throw new Exception(&quot;Destination Code not valid!&quot;);</span>
+                        }
+<span class="fc" id="L120">                        throw new Exception(&quot;Source Code is not given but destination code is given.&quot;);</span>
+                    }
+<span class="fc" id="L122">                } catch (Exception e) {</span>
+<span class="fc" id="L123">                    createAlert(e.getMessage());</span>
+<span class="fc" id="L124">                }</span>
+<span class="fc" id="L125">            }</span>
+        });
+<span class="fc" id="L127">    }</span>
+
+    /**
+     * onCreateOptionsMenu is used to open Help Menu
+     *
+     * @param menu Menu option
+     * @return boolean
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+<span class="fc" id="L137">        MenuInflater inflater = getMenuInflater();</span>
+<span class="fc" id="L138">        inflater.inflate(R.menu.help_menu, menu);</span>
+<span class="fc" id="L139">        return true;</span>
+    }
+
+    /**
+     * onOptionsItemSelected is used to display the Help Menu
+     *
+     * @param item is selected menu item
+     * @return boolean
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        if (item.getItemId() == R.id.readme) {</span>
+<span class="fc" id="L151">            Intent thirdpage = new Intent(getApplicationContext(), README.class);</span>
+<span class="fc" id="L152">            startActivity(thirdpage);</span>
+        }
+<span class="fc" id="L154">        return true;</span>
+    }
+
+    /**
+     * createAlert creates Alert Dialog incase of error
+     *
+     * @param msg is the message to be displayed incase of error
+     */
+    public void createAlert(String msg) {
+<span class="fc" id="L163">        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);</span>
+<span class="fc" id="L164">        builder1.setMessage(msg);</span>
+<span class="fc" id="L165">        builder1.setCancelable(true);</span>
+<span class="fc" id="L166">        AlertDialog alert11 = builder1.create();</span>
+<span class="fc" id="L167">        alert11.show();</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * readFile reads the file created with AirlineName.txt of it exits
+     * and class the appropriate class (SearchFlight or PrettPrintSearch) with intent parameters
+     *
+     * @param aname     is the Airline Name
+     * @param src       is the Source Airport
+     * @param dest      is the Destination Airport
+     * @param classname is either SearchFlight or PrettyPrintFlight
+     * @throws Exception
+     */
+    public void readFile(String aname, String src, String dest, Class classname) throws Exception {
+<span class="fc" id="L181">        File file = new File(context.getFilesDir(), aname + &quot;.txt&quot;);</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        if (file.exists()) {</span>
+<span class="fc" id="L183">            FileInputStream fis = context.openFileInput(aname + &quot;.txt&quot;);</span>
+<span class="fc" id="L184">            InputStreamReader inputStreamReader = new InputStreamReader(fis);</span>
+<span class="fc" id="L185">            BufferedReader reader = new BufferedReader(inputStreamReader);</span>
+            String line;
+<span class="fc" id="L187">            ArrayList&lt;String&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L188" title="All 2 branches covered.">            while ((line = reader.readLine()) != null) {</span>
+<span class="fc" id="L189">                result.add(line);</span>
+            }
+<span class="fc" id="L191">            Intent thirdpage = new Intent(getApplicationContext(), classname);</span>
+<span class="fc" id="L192">            System.out.println(result);</span>
+<span class="fc" id="L193">            thirdpage.putExtra(&quot;airline&quot;, result);</span>
+<span class="fc" id="L194">            thirdpage.putExtra(&quot;src&quot;, src);</span>
+<span class="fc" id="L195">            thirdpage.putExtra(&quot;dest&quot;, dest);</span>
+<span class="fc" id="L196">            startActivity(thirdpage);</span>
+
+<span class="fc" id="L198">        } else {</span>
+<span class="fc" id="L199">            createAlert(&quot;Airline not found in App. Please check Airline Name entered&quot;);</span>
+        }
+
+<span class="fc" id="L202">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Generated by the Android Gradle plugin 3.6.1</div></body></html>

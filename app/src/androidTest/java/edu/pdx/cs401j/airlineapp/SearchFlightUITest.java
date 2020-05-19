@@ -24,7 +24,7 @@ import static junit.framework.TestCase.assertNotNull;
 @RunWith(AndroidJUnit4.class)
 public class SearchFlightUITest {
     @Rule
-    public ActivityTestRule<Main3Activity> main2activity=new ActivityTestRule<Main3Activity>(Main3Activity.class){
+    public ActivityTestRule<SearchFlight> main2activity=new ActivityTestRule<SearchFlight>(SearchFlight.class){
 
         @Override
         protected Intent getActivityIntent() {
@@ -36,17 +36,24 @@ public class SearchFlightUITest {
         }
     };
 
-    private Main3Activity activity=null;
+    private SearchFlight activity=null;
 
     @Before
     public void setUp(){
         activity=main2activity.getActivity();
     }
 
+    /**
+     * Testing Pretty Print Search FLight navigation
+     */
     @Test
     public void PrettyPrintTest(){
         onView(withId(R.id.PrettyPrint)).perform(click());
     }
+
+    /**
+     * Help Menu Test
+     */
     @Test
     public void helpTest(){
         Instrumentation.ActivityMonitor monitor=getInstrumentation().addMonitor(README.class.getName(),null,false);

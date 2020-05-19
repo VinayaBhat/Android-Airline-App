@@ -21,7 +21,7 @@ import static junit.framework.TestCase.assertNotNull;
 
 public class PrettyPrintUIHelpTest{
         @Rule
-        public ActivityTestRule<SearchResult> main2activity=new ActivityTestRule<SearchResult>(SearchResult.class){
+        public ActivityTestRule<PrettyPrintSearchFlight> main2activity=new ActivityTestRule<PrettyPrintSearchFlight>(PrettyPrintSearchFlight.class){
 
             @Override
             protected Intent getActivityIntent() {
@@ -33,13 +33,16 @@ public class PrettyPrintUIHelpTest{
             }
         };
 
-        private SearchResult activity=null;
+        private PrettyPrintSearchFlight activity=null;
 
         @Before
         public void setUp(){
             activity=main2activity.getActivity();
         }
 
+    /**
+     * Help Menu Test
+     */
     @Test
     public void helpTest(){
         Instrumentation.ActivityMonitor monitor=getInstrumentation().addMonitor(README.class.getName(),null,false);

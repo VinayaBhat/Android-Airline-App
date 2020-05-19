@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddNewFlightTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AirlineApp$airlineapp_in_app.exec</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs401j.airlineapp</a> &gt; <span class="el_source">AddNewFlightTest.java</span></div><h1>AddNewFlightTest.java</h1><pre class="source lang-java linenums">package edu.pdx.cs401j.airlineapp;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Build;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
+import org.robolectric.annotation.Config;
+import org.robolectric.fakes.RoboMenuItem;
+import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowAlertDialog;
+import org.robolectric.shadows.ShadowToast;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.robolectric.Shadows.shadowOf;
+
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = {Build.VERSION_CODES.O_MR1})
+<span class="nc" id="L30">public class AddNewFlightTest {</span>
+
+    AddFlightPage activity;
+    EditText AirlineNameField;
+    EditText FlightNumber;
+    EditText Source;
+    EditText Destination;
+    EditText DepDate;
+    EditText DepTime;
+    EditText ArrivalDate;
+    EditText ArrivalTime;
+    Button AddFlight;
+
+    @Before
+    public void SetUp(){
+<span class="nc" id="L45">        activity = Robolectric.buildActivity(AddFlightPage.class).create()</span>
+<span class="nc" id="L46">                .start()</span>
+<span class="nc" id="L47">                .resume()</span>
+<span class="nc" id="L48">                .visible()</span>
+<span class="nc" id="L49">                .get();</span>
+<span class="nc" id="L50">        AirlineNameField=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L51">        FlightNumber=(EditText) activity.findViewById(R.id.FlightNumber);</span>
+<span class="nc" id="L52">        Source=(EditText) activity.findViewById(R.id.Source);</span>
+<span class="nc" id="L53">        Destination=(EditText) activity.findViewById(R.id.Destination);</span>
+<span class="nc" id="L54">        DepDate=(EditText) activity.findViewById(R.id.DepDate);</span>
+<span class="nc" id="L55">        DepTime=(EditText) activity.findViewById(R.id.DepTime);</span>
+<span class="nc" id="L56">        ArrivalDate=(EditText) activity.findViewById(R.id.ArrivalDate);</span>
+<span class="nc" id="L57">        ArrivalTime=(EditText) activity.findViewById(R.id.ArrivalTime);</span>
+<span class="nc" id="L58">        AddFlight=(Button)activity.findViewById(R.id.AddFlight);</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Add Flight with no Airline name
+     */
+    @Test
+    public void AddFlight_AirlineNameNotSet_Error(){
+<span class="nc" id="L66">        AddFlight.performClick();</span>
+<span class="nc" id="L67">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L68">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L69">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L70">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Airline name is not set&quot;));</span>
+<span class="nc" id="L71">    }</span>
+    /**
+     * Add Flight with no Flight Number
+     */
+    @Test
+    public void AddFlight_FlightNumberNotSet_Error(){
+<span class="nc" id="L77">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L78">        AddFlight.performClick();</span>
+<span class="nc" id="L79">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L80">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L81">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L82">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Flight number is not set properly&quot;));</span>
+<span class="nc" id="L83">    }</span>
+    /**
+     * Add Flight with no source
+     */
+    @Test
+    public void AddFlight_SourceNotSet_Error(){
+<span class="nc" id="L89">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L90">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L91">        AddFlight.performClick();</span>
+<span class="nc" id="L92">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L93">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L94">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L95">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source airport code is invalid&quot;));</span>
+<span class="nc" id="L96">    }</span>
+
+    @Test
+    public void AddFlight_InvalidSource_Error(){
+<span class="nc" id="L100">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L101">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L102">        Source.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L103">        AddFlight.performClick();</span>
+<span class="nc" id="L104">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L105">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L106">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L107">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source airport code is invalid&quot;));</span>
+<span class="nc" id="L108">    }</span>
+    /**
+     * Add Flight with invalid source
+     */
+    @Test
+    public void AddFlight_DepDateNotSet_Error(){
+<span class="nc" id="L114">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L115">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L116">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L117">        AddFlight.performClick();</span>
+<span class="nc" id="L118">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L119">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L120">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L121">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Departure Date not set properly&quot;));</span>
+<span class="nc" id="L122">    }</span>
+    /**
+     * Add Flight with no dept date
+     */
+    @Test
+    public void AddFlight_DepDateInvalid_Error(){
+<span class="nc" id="L128">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L129">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L130">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L131">        DepDate.setText(&quot;1/x/1111&quot;);</span>
+<span class="nc" id="L132">        AddFlight.performClick();</span>
+<span class="nc" id="L133">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L134">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L135">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L136">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Departure Date not set properly&quot;));</span>
+<span class="nc" id="L137">    }</span>
+    /**
+     * Add Flight with no dept time
+     */
+    @Test
+    public void AddFlight_DepTimeNotSet_Error(){
+<span class="nc" id="L143">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L144">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L145">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L146">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L147">        AddFlight.performClick();</span>
+<span class="nc" id="L148">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L149">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L150">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L151">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Departure Time not set properly&quot;));</span>
+<span class="nc" id="L152">    }</span>
+    /**
+     * Add Flight with invalid dept time
+     */
+    @Test
+    public void AddFlight_DepTimeInvalid_Error(){
+<span class="nc" id="L158">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L159">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L160">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L161">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L162">        DepTime.setText(&quot;10:XX am&quot;);</span>
+<span class="nc" id="L163">        AddFlight.performClick();</span>
+<span class="nc" id="L164">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L165">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L166">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L167">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Departure Time not set properly&quot;));</span>
+<span class="nc" id="L168">    }</span>
+    /**
+     * Add Flight with no destination
+     */
+    @Test
+    public void AddFlight_DestinationNotSet_Error(){
+<span class="nc" id="L174">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L175">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L176">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L177">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L178">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L179">        AddFlight.performClick();</span>
+<span class="nc" id="L180">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L181">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L182">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L183">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Destination airport code not valid&quot;));</span>
+<span class="nc" id="L184">    }</span>
+    /**
+     * Add Flight with invalid destiantion
+     */
+    @Test
+    public void AddFlight_Destinationinvalid_Error(){
+<span class="nc" id="L190">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L191">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L192">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L193">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L194">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L195">        Destination.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L196">        AddFlight.performClick();</span>
+<span class="nc" id="L197">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L198">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L199">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L200">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Destination airport code not valid&quot;));</span>
+<span class="nc" id="L201">    }</span>
+    /**
+     * Add Flight with no arrival date
+     */
+    @Test
+    public void AddFlight_ArrivalDateNotSet_Error(){
+<span class="nc" id="L207">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L208">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L209">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L210">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L211">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L212">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L213">        AddFlight.performClick();</span>
+<span class="nc" id="L214">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L215">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L216">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L217">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Arrival Date not set properly&quot;));</span>
+<span class="nc" id="L218">    }</span>
+    /**
+     * Add Flight with invalid arrival date
+     */
+    @Test
+    public void AddFlight_ArrivalDateInvalid_Error(){
+<span class="nc" id="L224">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L225">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L226">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L227">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L228">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L229">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L230">        ArrivalDate.setText(&quot;1/2/XXXX&quot;);</span>
+<span class="nc" id="L231">        AddFlight.performClick();</span>
+<span class="nc" id="L232">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L233">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L234">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L235">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Arrival Date not set properly&quot;));</span>
+<span class="nc" id="L236">    }</span>
+    /**
+     * Add Flight with arrival time not set
+     */
+    @Test
+    public void AddFlight_ArrivalTimeNotSet_Error(){
+<span class="nc" id="L242">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L243">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L244">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L245">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L246">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L247">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L248">        ArrivalDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L249">        AddFlight.performClick();</span>
+<span class="nc" id="L250">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L251">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L252">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L253">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Arrival Time not set properly&quot;));</span>
+<span class="nc" id="L254">    }</span>
+    /**
+     * Add Flight with invalid arrival time
+     */
+    @Test
+    public void AddFlight_ArrivalTimeInvalid_Error(){
+<span class="nc" id="L260">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L261">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L262">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L263">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L264">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L265">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L266">        ArrivalDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L267">        ArrivalTime.setText(&quot;10:XX pm&quot;);</span>
+<span class="nc" id="L268">        AddFlight.performClick();</span>
+<span class="nc" id="L269">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L270">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L271">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L272">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Arrival Time not set properly&quot;));</span>
+<span class="nc" id="L273">    }</span>
+    /**
+     * Add Flight with arrival date before departure date
+     */
+    @Test
+    public void AddFlight_ArrivalBeforeDepartureError_Error(){
+<span class="nc" id="L279">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L280">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L281">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L282">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L283">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L284">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L285">        ArrivalDate.setText(&quot;1/1/2000&quot;);</span>
+<span class="nc" id="L286">        ArrivalTime.setText(&quot;10:20 am&quot;);</span>
+<span class="nc" id="L287">        AddFlight.performClick();</span>
+<span class="nc" id="L288">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L289">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L290">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L291">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Arrival date or time is not before departure date or time&quot;));</span>
+<span class="nc" id="L292">    }</span>
+    /**
+     * Add Flight success
+     */
+    @Test
+    public void Success_AddFlight(){
+<span class="nc" id="L298">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L299">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L300">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L301">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L302">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L303">        Destination.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L304">        ArrivalDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L305">        ArrivalTime.setText(&quot;10:30 pm&quot;);</span>
+<span class="nc" id="L306">        AddFlight.performClick();</span>
+<span class="nc" id="L307">        Assert.assertEquals(&quot;Flight has been added..&quot;, ShadowToast.getTextOfLatestToast().toString());</span>
+
+<span class="nc" id="L309">    }</span>
+    /**
+     * Add Flight already present airline success
+     */
+    @Test
+    public void FlightAlreadyPresent_AddFlight(){
+<span class="nc" id="L315">        AirlineNameField.setText(&quot;Alaska&quot;);</span>
+<span class="nc" id="L316">        FlightNumber.setText(&quot;123&quot;);</span>
+<span class="nc" id="L317">        Source.setText(&quot;PDX&quot;);</span>
+<span class="nc" id="L318">        DepDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L319">        DepTime.setText(&quot;10:30 am&quot;);</span>
+<span class="nc" id="L320">        Destination.setText(&quot;LAX&quot;);</span>
+<span class="nc" id="L321">        ArrivalDate.setText(&quot;1/2/2000&quot;);</span>
+<span class="nc" id="L322">        ArrivalTime.setText(&quot;10:30 pm&quot;);</span>
+<span class="nc" id="L323">        AddFlight.performClick();</span>
+<span class="nc" id="L324">        Assert.assertEquals(&quot;Flight has been added..&quot;, ShadowToast.getTextOfLatestToast().toString());</span>
+<span class="nc" id="L325">    }</span>
+    /**
+     * Help Menu Test
+     */
+    @Test
+    public void helpTest(){
+<span class="nc" id="L331">        MenuItem menuItem = new RoboMenuItem(R.menu.help_menu);</span>
+<span class="nc" id="L332">        activity.onOptionsItemSelected(menuItem);</span>
+<span class="nc" id="L333">        MenuItem menuItem2 = new RoboMenuItem(R.id.readme);</span>
+<span class="nc" id="L334">        activity.onOptionsItemSelected(menuItem2);</span>
+<span class="nc" id="L335">        Intent expectedIntent = new Intent(activity, README.class);</span>
+<span class="nc" id="L336">        ShadowActivity shadowActivity = Shadows.shadowOf(activity);</span>
+<span class="nc" id="L337">        Intent actualIntent = shadowActivity.getNextStartedActivity();</span>
+<span class="nc" id="L338">        assertTrue(actualIntent.filterEquals(expectedIntent));</span>
+<span class="nc" id="L339">    }</span>
+
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

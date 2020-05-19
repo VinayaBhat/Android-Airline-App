@@ -29,7 +29,7 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class AddNewFlightTest {
 
-    Main2Activity activity;
+    AddFlightPage activity;
     EditText AirlineNameField;
     EditText FlightNumber;
     EditText Source;
@@ -42,7 +42,7 @@ public class AddNewFlightTest {
 
     @Before
     public void SetUp(){
-        activity = Robolectric.buildActivity(Main2Activity.class).create()
+        activity = Robolectric.buildActivity(AddFlightPage.class).create()
                 .start()
                 .resume()
                 .visible()
@@ -58,17 +58,22 @@ public class AddNewFlightTest {
         AddFlight=(Button)activity.findViewById(R.id.AddFlight);
     }
 
+    /**
+     * Add Flight with no Airline name
+     */
     @Test
-    public void Empty_AddFlight(){
+    public void AddFlight_AirlineNameNotSet_Error(){
         AddFlight.performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertTrue(dialog.isShowing());
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Airline name is not set"));
     }
-
+    /**
+     * Add Flight with no Flight Number
+     */
     @Test
-    public void NoFlightNumber_AddFlight(){
+    public void AddFlight_FlightNumberNotSet_Error(){
         AirlineNameField.setText("Alaska");
         AddFlight.performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
@@ -76,9 +81,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Flight number is not set properly"));
     }
-
+    /**
+     * Add Flight with no source
+     */
     @Test
-    public void SourceNotSet_AddFlight(){
+    public void AddFlight_SourceNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         AddFlight.performClick();
@@ -89,7 +96,7 @@ public class AddNewFlightTest {
     }
 
     @Test
-    public void SourceInvalid_AddFlight(){
+    public void AddFlight_InvalidSource_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("AAA");
@@ -99,9 +106,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source airport code is invalid"));
     }
-
+    /**
+     * Add Flight with invalid source
+     */
     @Test
-    public void DepDateNotSet_AddFlight(){
+    public void AddFlight_DepDateNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -111,8 +120,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Departure Date not set properly"));
     }
+    /**
+     * Add Flight with no dept date
+     */
     @Test
-    public void DepDateInvalid_AddFlight(){
+    public void AddFlight_DepDateInvalid_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -123,9 +135,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Departure Date not set properly"));
     }
-
+    /**
+     * Add Flight with no dept time
+     */
     @Test
-    public void DepTimeNotSet_AddFlight(){
+    public void AddFlight_DepTimeNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -136,8 +150,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Departure Time not set properly"));
     }
+    /**
+     * Add Flight with invalid dept time
+     */
     @Test
-    public void DepTimeInvalid_AddFlight(){
+    public void AddFlight_DepTimeInvalid_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -149,9 +166,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Departure Time not set properly"));
     }
-
+    /**
+     * Add Flight with no destination
+     */
     @Test
-    public void DestinationNotSet_AddFlight(){
+    public void AddFlight_DestinationNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -163,9 +182,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Destination airport code not valid"));
     }
-
+    /**
+     * Add Flight with invalid destiantion
+     */
     @Test
-    public void DestinationInvalid_AddFlight(){
+    public void AddFlight_Destinationinvalid_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -178,8 +199,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Destination airport code not valid"));
     }
+    /**
+     * Add Flight with no arrival date
+     */
     @Test
-    public void ArrivalDateNotSet_AddFlight(){
+    public void AddFlight_ArrivalDateNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -192,8 +216,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Arrival Date not set properly"));
     }
+    /**
+     * Add Flight with invalid arrival date
+     */
     @Test
-    public void ArrivalDateInvalid_AddFlight(){
+    public void AddFlight_ArrivalDateInvalid_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -207,9 +234,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Arrival Date not set properly"));
     }
-
+    /**
+     * Add Flight with arrival time not set
+     */
     @Test
-    public void ArrivalTimeNotSet_AddFlight(){
+    public void AddFlight_ArrivalTimeNotSet_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -223,9 +252,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Arrival Time not set properly"));
     }
-
+    /**
+     * Add Flight with invalid arrival time
+     */
     @Test
-    public void ArrivalInvalid_AddFlight(){
+    public void AddFlight_ArrivalTimeInvalid_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -240,9 +271,11 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Arrival Time not set properly"));
     }
-
+    /**
+     * Add Flight with arrival date before departure date
+     */
     @Test
-    public void ArrivalBeforeDepartureError_AddFlight(){
+    public void AddFlight_ArrivalBeforeDepartureError_Error(){
         AirlineNameField.setText("Alaska");
         FlightNumber.setText("123");
         Source.setText("PDX");
@@ -257,6 +290,9 @@ public class AddNewFlightTest {
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Arrival date or time is not before departure date or time"));
     }
+    /**
+     * Add Flight success
+     */
     @Test
     public void Success_AddFlight(){
         AirlineNameField.setText("Alaska");
@@ -271,7 +307,9 @@ public class AddNewFlightTest {
         Assert.assertEquals("Flight has been added..", ShadowToast.getTextOfLatestToast().toString());
 
     }
-
+    /**
+     * Add Flight already present airline success
+     */
     @Test
     public void FlightAlreadyPresent_AddFlight(){
         AirlineNameField.setText("Alaska");
@@ -285,7 +323,9 @@ public class AddNewFlightTest {
         AddFlight.performClick();
         Assert.assertEquals("Flight has been added..", ShadowToast.getTextOfLatestToast().toString());
     }
-
+    /**
+     * Help Menu Test
+     */
     @Test
     public void helpTest(){
         MenuItem menuItem = new RoboMenuItem(R.menu.help_menu);

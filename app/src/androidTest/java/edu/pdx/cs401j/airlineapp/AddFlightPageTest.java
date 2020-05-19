@@ -12,7 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.openActionBarOverflowOrOptionsMenu;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -29,39 +28,51 @@ import static org.hamcrest.core.IsNot.not;
 
 @RunWith(AndroidJUnit4.class)
 
-public class Main2ActivityTest {
+public class AddFlightPageTest {
     @Rule
-    public ActivityTestRule<Main2Activity> main2activity=new ActivityTestRule<>(Main2Activity.class);
-    private Main2Activity activity=null;
+    public ActivityTestRule<AddFlightPage> main2activity=new ActivityTestRule<>(AddFlightPage.class);
+    private AddFlightPage activity=null;
 
     @Before
     public void setUp(){
         activity=main2activity.getActivity();
     }
 
+    /**
+     * Clicking Add Flight with no params
+     */
     @Test
-    public void NoInput(){
+    public void AddFlight_NoAirlineName_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AddFlight)).perform(click());
         onView(withText("Airline name is not set")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with no flight number
+     */
     @Test
-    public void NoFlightNumber(){
+    public void AddFlight_NoFlightNumber_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Flight number is not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with source code
+     */
     @Test
-    public void NoSourceCode(){
+    public void AddFlight_NoSourceAirport_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Source airport code is invalid")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid source code
+     */
     @Test
-    public void InValidSourceCode(){
+    public void AddFlight_InvalidSourceAirport_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -69,9 +80,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Source airport code is invalid")).check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight with no departure date
+     */
     @Test
-    public void NoDepartureDate(){
+    public void AddFlight_NoDepartureDate_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -79,8 +92,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Departure Date not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid departure date
+     */
     @Test
-    public void InvalidDepartureDate(){
+    public void AddFlight_InvalidDepartureDate_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -89,9 +105,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Departure Date not set properly")).check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight with no departure time
+     */
     @Test
-    public void NoDepartureTime(){
+    public void AddFlight_NoDepartureTime_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -100,8 +118,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Departure Time not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid departure time
+     */
     @Test
-    public void InvalidDepartureTime(){
+    public void AddFlight_InvalidDepartureTime_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -111,8 +132,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Departure Time not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with no destination
+     */
     @Test
-    public void NoDestinationCode(){
+    public void AddFlight_NoDestination_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -122,8 +146,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Destination airport code not valid")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid destination
+     */
     @Test
-    public void InValidDestinationCode(){
+    public void AddFlight_InvalidDestination_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -134,9 +161,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Destination airport code not valid")).check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight with no arrival date
+     */
     @Test
-    public void NoArrivalDate(){
+    public void AddFlight_NoArrivalDate_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -147,8 +176,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Arrival Date not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid arrival date
+     */
     @Test
-    public void InvalidArrivalDate(){
+    public void AddFlight_InvalidArrivalDate_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -160,9 +192,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Arrival Date not set properly")).check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight with no arrival time
+     */
     @Test
-    public void NoArrivalTime(){
+    public void AddFlight_NoArrivalTime_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -174,8 +208,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Arrival Time not set properly")).check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight with invalid arrival time
+     */
     @Test
-    public void InvalidArrivalTime(){
+    public void AddFlight_InvalidArrivalTime_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -188,9 +225,11 @@ public class Main2ActivityTest {
         onView(withId(R.id.AddFlight)).perform(closeSoftKeyboard()).perform(click());
         onView(withText("Arrival Time not set properly")).check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight success
+     */
     @Test
-    public void AddingNewFile(){
+    public void AddFlight_NewFlightToNewFile_SuccessToast(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -205,9 +244,11 @@ public class Main2ActivityTest {
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }
-
+    /**
+     * Clicking Add Flight success to existing file
+     */
     @Test
-    public void AddingNewToExistingFile(){
+    public void AddFlight_NewFlightToExistingFile_SuccessToast(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -222,8 +263,11 @@ public class Main2ActivityTest {
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }
+    /**
+     * Clicking Add Flight success to new file
+     */
     @Test
-    public void AddingNewFlightToNewFile(){
+    public void AddFlight_AddingNewFlightToNewFile_Success(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"+Math.random()));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -239,9 +283,11 @@ public class Main2ActivityTest {
                 check(matches(isDisplayed()));
     }
 
-
+    /**
+     * Clicking Add Flight with departure date after arrival date
+     */
     @Test
-    public void ArrivalTimeBeforeDepartureTime(){
+    public void AddFlight_ArrivalDateBeforeDeparture_AlertError(){
         assertNotNull(activity.findViewById(R.id.AddFlight));
         onView(withId(R.id.AirlineNameField)).perform(clearText(),typeText("Alaska"));
         onView(withId(R.id.FlightNumber)).perform(clearText(),typeText("123"));
@@ -255,10 +301,11 @@ public class Main2ActivityTest {
         onView(withText("Arrival date or time is not before departure date or time")).check(matches(isDisplayed()));
     }
 
-
-
+    /**
+     * Help Menu test
+     */
     @Test
-    public void helpTest(){
+    public void AddFlight_HELPMenu(){
         Instrumentation.ActivityMonitor monitor=getInstrumentation().addMonitor(README.class.getName(),null,false);
         assertNotNull(activity.findViewById(R.id.help));
         onView(withId(R.id.help)).perform(click());

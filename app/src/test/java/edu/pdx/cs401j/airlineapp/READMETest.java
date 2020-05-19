@@ -20,7 +20,9 @@ import static org.junit.Assert.assertTrue;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class READMETest {
-
+    /**
+     * Help Menu test
+     */
     @Test
     public void helpTest(){
         README activity= Robolectric.buildActivity(README.class)

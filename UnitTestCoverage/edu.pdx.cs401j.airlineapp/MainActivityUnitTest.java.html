@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainActivityUnitTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">AirlineApp$airlineapp_in_app.exec</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs401j.airlineapp</a> &gt; <span class="el_source">MainActivityUnitTest.java</span></div><h1>MainActivityUnitTest.java</h1><pre class="source lang-java linenums">package edu.pdx.cs401j.airlineapp;
+
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.os.Build;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
+import org.robolectric.annotation.Config;
+import org.robolectric.fakes.RoboMenuItem;
+import org.robolectric.shadows.ShadowActivity;
+import org.robolectric.shadows.ShadowAlertDialog;
+
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.*;
+
+import static org.robolectric.Shadows.shadowOf;
+
+/**
+ * Example local unit test, which will execute on the development machine (host).
+ *
+ * @see &lt;a href=&quot;http://d.android.com/tools/testing&quot;&gt;Testing documentation&lt;/a&gt;
+ */
+
+@RunWith(RobolectricTestRunner.class)
+@Config(sdk = {Build.VERSION_CODES.O_MR1})
+<span class="nc" id="L34">public class MainActivityUnitTest{</span>
+    MainActivity activity;
+    Button AddFlight;
+    Button SearchFlight;
+    EditText AirlineName;
+    EditText Src;
+    EditText Dest;
+    Button prettyPrint;
+    @Before
+    public void SetUp(){
+
+<span class="nc" id="L45">         activity = Robolectric.buildActivity(MainActivity.class).create()</span>
+<span class="nc" id="L46">                .start()</span>
+<span class="nc" id="L47">                .resume()</span>
+<span class="nc" id="L48">                .visible()</span>
+<span class="nc" id="L49">                .get();</span>
+<span class="nc" id="L50">         AddFlight = (Button) activity.findViewById(R.id.AddNewFlight);</span>
+<span class="nc" id="L51">        SearchFlight = (Button) activity.findViewById(R.id.SearchFlight);</span>
+<span class="nc" id="L52">        prettyPrint = (Button) activity.findViewById(R.id.PP);</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Add Flight navigates to next page
+     */
+    @Test
+    public void AddFlight_NextActivity_Success(){
+<span class="nc" id="L60">        AddFlight.performClick();</span>
+<span class="nc" id="L61">        Intent expectedIntent = new Intent(activity, AddFlightPage.class);</span>
+<span class="nc" id="L62">        ShadowActivity shadowActivity = Shadows.shadowOf(activity);</span>
+<span class="nc" id="L63">        Intent actualIntent = shadowActivity.getNextStartedActivity();</span>
+<span class="nc" id="L64">        assertTrue(actualIntent.filterEquals(expectedIntent));</span>
+<span class="nc" id="L65">    }</span>
+
+    /**
+     * Search Flight with no input
+     */
+    @Test
+    public void SearchFlight_NoInput_Error() {
+<span class="nc" id="L72">        SearchFlight.performClick();</span>
+<span class="nc" id="L73">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L74">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L75">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L76">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Airline Name not provided&quot;));</span>
+<span class="nc" id="L77">    }</span>
+    /**
+     * Search Flight with dummy airline
+     */
+    @Test
+    public void SearchFlight_DummyAirline_Error() {
+<span class="nc" id="L83">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L84">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L85">        SearchFlight.performClick();</span>
+<span class="nc" id="L86">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L87">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L88">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L89">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Airline not found in App. Please check Airline Name entered&quot;));</span>
+<span class="nc" id="L90">    }</span>
+    /**
+     * Search Flight with no destination
+     */
+    @Test
+    public void SearchFlight_NoDestination_Error() {
+<span class="nc" id="L96">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L97">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L98">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L99">        Src.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L100">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L101">        SearchFlight.performClick();</span>
+<span class="nc" id="L102">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L103">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L104">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L105">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code is given but destination code is not given.&quot;));</span>
+<span class="nc" id="L106">    }</span>
+    /**
+     * Search Flight with no source
+     */
+    @Test
+    public void SearchFlight_NoSource_Error() {
+<span class="nc" id="L112">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L113">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L114">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L115">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L116">        Dest.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L117">        SearchFlight.performClick();</span>
+<span class="nc" id="L118">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L119">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L120">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L121">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code is not given but destination code is given.&quot;));</span>
+<span class="nc" id="L122">    }</span>
+    /**
+     * Search Flight with invalid source
+     */
+    @Test
+    public void SearchFlight_InvalidSource_Error() {
+<span class="nc" id="L128">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L129">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L130">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L131">        Src.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L132">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L133">        Dest.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L134">        SearchFlight.performClick();</span>
+<span class="nc" id="L135">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L136">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L137">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L138">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code not valid!&quot;));</span>
+<span class="nc" id="L139">    }</span>
+    /**
+     * Search Flight with invalid destination
+     */
+    @Test
+    public void SearchFlight_InvalidDestination_Error() {
+<span class="nc" id="L145">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L146">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L147">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L148">        Src.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L149">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L150">        Dest.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L151">        SearchFlight.performClick();</span>
+<span class="nc" id="L152">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L153">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L154">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L155">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Destination Code not valid!&quot;));</span>
+<span class="nc" id="L156">    }</span>
+    /**
+     * Pretty Print Search Flight with no input
+     */
+    @Test
+    public void PrettyPrintSearchFlight_NoInput_Error() {
+<span class="nc" id="L162">        prettyPrint.performClick();</span>
+<span class="nc" id="L163">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L164">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L165">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L166">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Airline Name not provided&quot;));</span>
+<span class="nc" id="L167">    }</span>
+    /**
+     * Pretty Print Search Flight with dummy airline
+     */
+    @Test
+    public void PrettyPrintSearchFlight_DummyAirline_Error() {
+<span class="nc" id="L173">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L174">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L175">        prettyPrint.performClick();</span>
+<span class="nc" id="L176">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L177">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L178">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L179">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Airline not found in App. Please check Airline Name entered&quot;));</span>
+<span class="nc" id="L180">    }</span>
+    /**
+     * Pretty Print Search Flight with no destination
+     */
+    @Test
+    public void PrettyPrintSearchFlight_NoDestination_Error() {
+<span class="nc" id="L186">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L187">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L188">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L189">        Src.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L190">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L191">        prettyPrint.performClick();</span>
+<span class="nc" id="L192">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L193">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L194">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L195">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code is given but destination code is not given.&quot;));</span>
+<span class="nc" id="L196">    }</span>
+    /**
+     * Pretty Print Search Flight with no source
+     */
+    @Test
+    public void PrettyPrintSearchFlight_NoSource_Error() {
+<span class="nc" id="L202">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L203">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L204">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L205">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L206">        Dest.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L207">        prettyPrint.performClick();</span>
+<span class="nc" id="L208">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L209">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L210">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L211">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code is not given but destination code is given.&quot;));</span>
+<span class="nc" id="L212">    }</span>
+    /**
+     * Pretty Print Search Flight with invalid source
+     */
+    @Test
+    public void PrettyPrintSearchFlight_InvalidSource_Error() {
+<span class="nc" id="L218">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L219">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L220">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L221">        Src.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L222">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L223">        Dest.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L224">        prettyPrint.performClick();</span>
+<span class="nc" id="L225">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L226">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L227">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L228">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Source Code not valid!&quot;));</span>
+<span class="nc" id="L229">    }</span>
+    /**
+     * Pretty Print Search Flight with invalid destination
+     */
+    @Test
+    public void PrettyPrintSearchFlight_InvalidDestination_Error() {
+<span class="nc" id="L235">        AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);</span>
+<span class="nc" id="L236">        AirlineName.setText(&quot;DummyAirline&quot;);</span>
+<span class="nc" id="L237">        Src=(EditText) activity.findViewById(R.id.SourceField);</span>
+<span class="nc" id="L238">        Src.setText(&quot;JFK&quot;);</span>
+<span class="nc" id="L239">        Dest=(EditText) activity.findViewById(R.id.DestinationField);</span>
+<span class="nc" id="L240">        Dest.setText(&quot;AAA&quot;);</span>
+<span class="nc" id="L241">        prettyPrint.performClick();</span>
+<span class="nc" id="L242">        AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();</span>
+<span class="nc" id="L243">        assertTrue(dialog.isShowing());</span>
+<span class="nc" id="L244">        ShadowAlertDialog sAlert = shadowOf(dialog);</span>
+<span class="nc" id="L245">        assertThat(sAlert.getMessage().toString(),equalTo(&quot;Destination Code not valid!&quot;));</span>
+<span class="nc" id="L246">    }</span>
+    /**
+     * Help Menu Test
+     */
+    @Test
+    public void helpTest(){
+<span class="nc" id="L252">        MenuItem menuItem = new RoboMenuItem(R.menu.help_menu);</span>
+<span class="nc" id="L253">        activity.onOptionsItemSelected(menuItem);</span>
+<span class="nc" id="L254">        MenuItem menuItem2 = new RoboMenuItem(R.id.readme);</span>
+<span class="nc" id="L255">        activity.onOptionsItemSelected(menuItem2);</span>
+<span class="nc" id="L256">        Intent expectedIntent = new Intent(activity, README.class);</span>
+<span class="nc" id="L257">        ShadowActivity shadowActivity = Shadows.shadowOf(activity);</span>
+<span class="nc" id="L258">        Intent actualIntent = shadowActivity.getNextStartedActivity();</span>
+<span class="nc" id="L259">        assertTrue(actualIntent.filterEquals(expectedIntent));</span>
+<span class="nc" id="L260">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

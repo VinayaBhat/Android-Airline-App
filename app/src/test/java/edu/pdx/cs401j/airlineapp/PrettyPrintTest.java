@@ -3,11 +3,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
 
-import org.checkerframework.checker.units.qual.A;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
@@ -17,7 +13,6 @@ import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowApplication;
 
 import java.util.ArrayList;
 
@@ -30,14 +25,16 @@ import static org.robolectric.Shadows.shadowOf;
 @Config(sdk = {Build.VERSION_CODES.O_MR1})
 public class PrettyPrintTest {
 
-
+    /**
+     * Pretty Print Flight with only Airline Name
+     */
     @Test
-    public void OnlyAirlineProvided() {
+    public void PrettyPrint_Airline_Success() {
         Intent intent = new Intent();
         ArrayList<String> flights=new ArrayList<>();
         flights.add("Alaska;123;PDX;1/1/00 1:30 AM;LAX;1/1/00 2:30 AM");
         intent.putStringArrayListExtra("airline",flights);
-        SearchResult activity= Robolectric.buildActivity(SearchResult.class,intent)
+        PrettyPrintSearchFlight activity= Robolectric.buildActivity(PrettyPrintSearchFlight.class,intent)
         .create()
                 .start()
                 .resume()
@@ -45,8 +42,11 @@ public class PrettyPrintTest {
                 .get();
     }
 
+    /**
+     * Pretty Print Flight with Airline Name, Source, Destination
+     */
     @Test
-    public void AirlineSrcDestProvided() {
+    public void PrettyPrint_AirlineSrcDest_Success() {
         Intent intent = new Intent();
         ArrayList<String> flights=new ArrayList<>();
         flights.add("Alaska;123;PDX;1/1/00 1:30 AM;LAX;1/1/00 2:30 AM");
@@ -54,7 +54,7 @@ public class PrettyPrintTest {
         intent.putStringArrayListExtra("airline",flights);
         intent.putExtra("src","PDX");
         intent.putExtra("dest","LAX");
-        SearchResult activity= Robolectric.buildActivity(SearchResult.class,intent)
+        PrettyPrintSearchFlight activity= Robolectric.buildActivity(PrettyPrintSearchFlight.class,intent)
                 .create()
                 .start()
                 .resume()
@@ -64,15 +64,18 @@ public class PrettyPrintTest {
 
     }
 
+    /**
+     * Pretty Print Flight with improper file format
+     */
     @Test
-    public void StringNotFormatted_Error() {
+    public void PrettyPrint_InvalidFileFormat_Success() {
         Intent intent = new Intent();
         ArrayList<String> flights=new ArrayList<>();
         flights.add("Alaska123;PDX;1/1/00 1:30 AM;LAX;1/1/00 2:30 AM");
         intent.putStringArrayListExtra("airline",flights);
         intent.putExtra("src","PDX");
         intent.putExtra("dest","LAX");
-        SearchResult activity= Robolectric.buildActivity(SearchResult.class,intent)
+        PrettyPrintSearchFlight activity= Robolectric.buildActivity(PrettyPrintSearchFlight.class,intent)
                 .create()
                 .start()
                 .resume()
@@ -86,6 +89,9 @@ public class PrettyPrintTest {
 
     }
 
+    /**
+     * Help Menu test
+     */
     @Test
     public void helpTest(){
         Intent intent = new Intent();
@@ -94,7 +100,7 @@ public class PrettyPrintTest {
         intent.putStringArrayListExtra("airline",flights);
         intent.putExtra("src","PDX");
         intent.putExtra("dest","LAX");
-        SearchResult activity= Robolectric.buildActivity(SearchResult.class,intent)
+        PrettyPrintSearchFlight activity= Robolectric.buildActivity(PrettyPrintSearchFlight.class,intent)
                 .create()
                 .start()
                 .resume()

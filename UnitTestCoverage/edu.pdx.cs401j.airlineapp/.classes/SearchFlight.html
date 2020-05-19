@@ -1,0 +1,235 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: SearchFlight</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">edu.pdx.cs401j.airlineapp</a> ]
+</div>
+
+<h1>Coverage Summary for Class: SearchFlight (edu.pdx.cs401j.airlineapp)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">SearchFlight</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (5/ 5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    96.7%
+  </span>
+  <span class="absValue">
+    (59/ 61)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">SearchFlight$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (7/ 7)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    97.1%
+  </span>
+  <span class="absValue">
+    (66/ 68)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package edu.pdx.cs401j.airlineapp;
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import androidx.annotation.NonNull;
+<i>4</i>&nbsp;import androidx.appcompat.app.AppCompatActivity;
+<i>5</i>&nbsp;
+<i>6</i>&nbsp;import android.app.AlertDialog;
+<i>7</i>&nbsp;import android.content.Context;
+<i>8</i>&nbsp;import android.content.Intent;
+<i>9</i>&nbsp;import android.os.Bundle;
+<i>10</i>&nbsp;import android.view.Menu;
+<i>11</i>&nbsp;import android.view.MenuInflater;
+<i>12</i>&nbsp;import android.view.MenuItem;
+<i>13</i>&nbsp;import android.view.View;
+<i>14</i>&nbsp;import android.widget.ArrayAdapter;
+<i>15</i>&nbsp;import android.widget.Button;
+<i>16</i>&nbsp;import android.widget.ListView;
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;import java.util.ArrayList;
+<i>19</i>&nbsp;import java.util.Collections;
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;public class SearchFlight extends AppCompatActivity {</b>
+<b class="fc"><i>22</i>&nbsp;    Context context = this;</b>
+<i>23</i>&nbsp;
+<i>24</i>&nbsp;    @Override
+<i>25</i>&nbsp;    protected void onCreate(Bundle savedInstanceState) {
+<b class="fc"><i>26</i>&nbsp;        super.onCreate(savedInstanceState);</b>
+<b class="fc"><i>27</i>&nbsp;        setContentView(R.layout.activity_main3);</b>
+<b class="fc"><i>28</i>&nbsp;        ArrayList&lt;String&gt; finalresult = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>29</i>&nbsp;        Intent intent = getIntent();</b>
+<b class="fc"><i>30</i>&nbsp;        ArrayList&lt;String&gt; result = intent.getStringArrayListExtra(&quot;airline&quot;);</b>
+<b class="fc"><i>31</i>&nbsp;        String source = intent.getStringExtra(&quot;src&quot;);</b>
+<b class="fc"><i>32</i>&nbsp;        String destination = intent.getStringExtra(&quot;dest&quot;);</b>
+<b class="fc"><i>33</i>&nbsp;        Button search = (Button) findViewById(R.id.PrettyPrint);</b>
+<b class="fc"><i>34</i>&nbsp;        search.setOnClickListener(new View.OnClickListener() {</b>
+<i>35</i>&nbsp;            public void onClick(View v) {
+<b class="fc"><i>36</i>&nbsp;                Intent thirdpage = new Intent(getApplicationContext(), PrettyPrintSearchFlight.class);</b>
+<b class="fc"><i>37</i>&nbsp;                thirdpage.putExtra(&quot;airline&quot;, getIntent().getStringArrayListExtra(&quot;airline&quot;));</b>
+<b class="fc"><i>38</i>&nbsp;                thirdpage.putExtra(&quot;src&quot;, getIntent().getStringExtra(&quot;src&quot;));</b>
+<b class="fc"><i>39</i>&nbsp;                thirdpage.putExtra(&quot;dest&quot;, getIntent().getStringExtra(&quot;dest&quot;));</b>
+<b class="fc"><i>40</i>&nbsp;                startActivity(thirdpage);</b>
+<b class="fc"><i>41</i>&nbsp;            }</b>
+<i>42</i>&nbsp;        });
+<b class="fc"><i>43</i>&nbsp;        ArrayList&lt;Flight&gt; result2 = new ArrayList&lt;&gt;();</b>
+<b class="fc"><i>44</i>&nbsp;        Airline a1 = null;</b>
+<b class="fc"><i>45</i>&nbsp;        ListView listView = (ListView) findViewById(R.id.ListView);</b>
+<b class="pc"><i>46</i>&nbsp;        for (String str : result) {</b>
+<i>47</i>&nbsp;            try {
+<b class="fc"><i>48</i>&nbsp;                String[] temp = str.split(&quot;;&quot;);</b>
+<b class="fc"><i>49</i>&nbsp;                a1 = new Airline(temp[0]);</b>
+<b class="fc"><i>50</i>&nbsp;                Flight f1 = new Flight(temp[1]);</b>
+<b class="fc"><i>51</i>&nbsp;                f1.setSource(temp[2]);</b>
+<b class="fc"><i>52</i>&nbsp;                String[] ddate = temp[3].split(&quot; &quot;);</b>
+<b class="fc"><i>53</i>&nbsp;                f1.setDeparture_time(ddate[0], ddate[1] + &quot; &quot; + ddate[2]);</b>
+<b class="fc"><i>54</i>&nbsp;                f1.setDestination(temp[4]);</b>
+<b class="pc"><i>55</i>&nbsp;                if (source != null &amp;&amp; destination != null &amp;&amp; source.equals(f1.getSource()) &amp;&amp; destination.equals(f1.getDestination())) {</b>
+<b class="fc"><i>56</i>&nbsp;                    String[] adate = temp[5].split(&quot; &quot;);</b>
+<b class="fc"><i>57</i>&nbsp;                    f1.setArrival_time(adate[0], adate[1] + &quot; &quot; + adate[2]);</b>
+<b class="fc"><i>58</i>&nbsp;                    result2.add(f1);</b>
+<b class="pc"><i>59</i>&nbsp;                } else if (source == null &amp;&amp; destination == null) {</b>
+<b class="fc"><i>60</i>&nbsp;                    String[] adate = temp[5].split(&quot; &quot;);</b>
+<b class="fc"><i>61</i>&nbsp;                    f1.setArrival_time(adate[0], adate[1] + &quot; &quot; + adate[2]);</b>
+<b class="fc"><i>62</i>&nbsp;                    result2.add(f1);</b>
+<i>63</i>&nbsp;                }
+<b class="fc"><i>64</i>&nbsp;            } catch (Exception e) {</b>
+<b class="fc"><i>65</i>&nbsp;                createAlert(e.getMessage());</b>
+<b class="fc"><i>66</i>&nbsp;            }</b>
+<b class="fc"><i>67</i>&nbsp;        }</b>
+<b class="fc"><i>68</i>&nbsp;        Collections.sort(result2);</b>
+<i>69</i>&nbsp;        try {
+<b class="pc"><i>70</i>&nbsp;            for (Flight f : result2) {</b>
+<b class="fc"><i>71</i>&nbsp;                finalresult.add(f.toString());</b>
+<b class="fc"><i>72</i>&nbsp;            }</b>
+<b class="nc"><i>73</i>&nbsp;        } catch (Exception e) {</b>
+<b class="nc"><i>74</i>&nbsp;            createAlert(e.getMessage());</b>
+<b class="fc"><i>75</i>&nbsp;        }</b>
+<b class="pc"><i>76</i>&nbsp;        if (finalresult.size() == 0 &amp;&amp; source == null &amp;&amp; destination == null) {</b>
+<b class="fc"><i>77</i>&nbsp;            finalresult.add(&quot;No flights with Airline &quot;);</b>
+<b class="pc"><i>78</i>&nbsp;        } else if (finalresult.size() == 0 &amp;&amp; source != null &amp;&amp; destination != null) {</b>
+<b class="fc"><i>79</i>&nbsp;            finalresult.add(&quot;No flights with Source &quot; + source + &quot; and destination &quot; + destination + &quot; from Airline &quot;);</b>
+<i>80</i>&nbsp;        }
+<b class="fc"><i>81</i>&nbsp;        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, finalresult);</b>
+<b class="fc"><i>82</i>&nbsp;        listView.setAdapter(arrayAdapter);</b>
+<i>83</i>&nbsp;
+<b class="fc"><i>84</i>&nbsp;    }</b>
+<i>85</i>&nbsp;
+<i>86</i>&nbsp;    /**
+<i>87</i>&nbsp;     * createAlert creates Alert Dialog incase of error
+<i>88</i>&nbsp;     *
+<i>89</i>&nbsp;     * @param msg is the message to be displayed incase of error
+<i>90</i>&nbsp;     */
+<i>91</i>&nbsp;    public void createAlert(String msg) {
+<b class="fc"><i>92</i>&nbsp;        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);</b>
+<b class="fc"><i>93</i>&nbsp;        builder1.setMessage(msg);</b>
+<b class="fc"><i>94</i>&nbsp;        builder1.setCancelable(true);</b>
+<b class="fc"><i>95</i>&nbsp;        AlertDialog alert11 = builder1.create();</b>
+<b class="fc"><i>96</i>&nbsp;        alert11.show();</b>
+<b class="fc"><i>97</i>&nbsp;    }</b>
+<i>98</i>&nbsp;
+<i>99</i>&nbsp;    /**
+<i>100</i>&nbsp;     * onCreateOptionsMenu is used to open Help Menu
+<i>101</i>&nbsp;     *
+<i>102</i>&nbsp;     * @param menu Menu option
+<i>103</i>&nbsp;     * @return boolean
+<i>104</i>&nbsp;     */
+<i>105</i>&nbsp;    @Override
+<i>106</i>&nbsp;    public boolean onCreateOptionsMenu(Menu menu) {
+<b class="fc"><i>107</i>&nbsp;        MenuInflater inflater = getMenuInflater();</b>
+<b class="fc"><i>108</i>&nbsp;        inflater.inflate(R.menu.help_menu, menu);</b>
+<b class="fc"><i>109</i>&nbsp;        return true;</b>
+<i>110</i>&nbsp;    }
+<i>111</i>&nbsp;
+<i>112</i>&nbsp;    /**
+<i>113</i>&nbsp;     * onOptionsItemSelected is used to display the Help Menu
+<i>114</i>&nbsp;     *
+<i>115</i>&nbsp;     * @param item is selected menu item
+<i>116</i>&nbsp;     * @return boolean
+<i>117</i>&nbsp;     */
+<i>118</i>&nbsp;    @Override
+<i>119</i>&nbsp;    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+<b class="pc"><i>120</i>&nbsp;        if (item.getItemId() == R.id.readme) {</b>
+<b class="fc"><i>121</i>&nbsp;            Intent thirdpage = new Intent(getApplicationContext(), README.class);</b>
+<b class="fc"><i>122</i>&nbsp;            startActivity(thirdpage);</b>
+<i>123</i>&nbsp;        }
+<b class="fc"><i>124</i>&nbsp;        return true;</b>
+<i>125</i>&nbsp;    }
+<i>126</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-05-18 17:45</div>
+</div>
+</body>
+</html>

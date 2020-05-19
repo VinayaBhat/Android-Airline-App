@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PrettyPrintSearchFlight.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs401j.airlineapp</a> &gt; <span class="el_source">PrettyPrintSearchFlight.java</span></div><h1>PrettyPrintSearchFlight.java</h1><pre class="source lang-java linenums">package edu.pdx.cs401j.airlineapp;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+
+<span class="fc" id="L24">public class PrettyPrintSearchFlight extends AppCompatActivity {</span>
+<span class="fc" id="L25">    Context context = this;</span>
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="fc" id="L29">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L30">        setContentView(R.layout.activity_search_result);</span>
+<span class="fc" id="L31">        Intent intent = getIntent();</span>
+<span class="fc" id="L32">        ArrayList&lt;String&gt; finalresult = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">        ArrayList&lt;String&gt; result = intent.getStringArrayListExtra(&quot;airline&quot;);</span>
+<span class="fc" id="L34">        String source = intent.getStringExtra(&quot;src&quot;);</span>
+<span class="fc" id="L35">        String destination = intent.getStringExtra(&quot;dest&quot;);</span>
+<span class="fc" id="L36">        ArrayList&lt;Flight&gt; result2 = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L37">        Airline a1 = null;</span>
+<span class="fc" id="L38">        ListView listView = (ListView) findViewById(R.id.ListViewID);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (String str : result) {</span>
+            try {
+<span class="fc" id="L41">                String[] temp = str.split(&quot;;&quot;);</span>
+<span class="fc" id="L42">                a1 = new Airline(temp[0]);</span>
+<span class="fc" id="L43">                Flight f1 = new Flight(temp[1]);</span>
+<span class="fc" id="L44">                f1.setSource(temp[2]);</span>
+<span class="fc" id="L45">                String[] ddate = temp[3].split(&quot; &quot;);</span>
+
+<span class="fc" id="L47">                f1.setDeparture_time(ddate[0], ddate[1] + &quot; &quot; + ddate[2]);</span>
+<span class="fc" id="L48">                f1.setDestination(temp[4]);</span>
+<span class="pc bpc" id="L49" title="2 of 8 branches missed.">                if (source != null &amp;&amp; destination != null &amp;&amp; source.equals(f1.getSource()) &amp;&amp; destination.equals(f1.getDestination())) {</span>
+<span class="fc" id="L50">                    String[] adate = temp[5].split(&quot; &quot;);</span>
+<span class="fc" id="L51">                    f1.setArrival_time(adate[0], adate[1] + &quot; &quot; + adate[2]);</span>
+<span class="fc" id="L52">                    result2.add(f1);</span>
+<span class="pc bpc" id="L53" title="1 of 4 branches missed.">                } else if (source == null &amp;&amp; destination == null) {</span>
+<span class="fc" id="L54">                    String[] adate = temp[5].split(&quot; &quot;);</span>
+<span class="fc" id="L55">                    f1.setArrival_time(adate[0], adate[1] + &quot; &quot; + adate[2]);</span>
+<span class="fc" id="L56">                    result2.add(f1);</span>
+                }
+<span class="fc" id="L58">            } catch (Exception e) {</span>
+<span class="fc" id="L59">                createAlert(e.getMessage());</span>
+<span class="fc" id="L60">            }</span>
+
+<span class="fc" id="L62">        }</span>
+
+<span class="fc" id="L64">        Collections.sort(result2);</span>
+        try {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">            for (Flight f : result2) {</span>
+<span class="fc" id="L67">                finalresult.add(&quot;Airline Name: &quot; + a1.getName() + &quot; \n&quot; + &quot;Flight Number: &quot; + f.getNumber() + &quot; \n&quot; +</span>
+<span class="fc" id="L68">                        &quot;Departs &quot; + f.getSource() + &quot; at &quot; + f.getDepartureString() + &quot;\n&quot; + &quot;Arrives &quot; + f.getDestination() + &quot; at &quot; +</span>
+<span class="fc" id="L69">                        f.getArrivalString() + &quot; \n&quot; + &quot;Travel Time is &quot; + Flight.findoutminutes(f.getDepartureString(), f.getArrivalString()) + &quot; minutes&quot;);</span>
+<span class="fc" id="L70">            }</span>
+<span class="nc" id="L71">        } catch (Exception e) {</span>
+<span class="nc" id="L72">            createAlert(e.getMessage());</span>
+<span class="fc" id="L73">        }</span>
+<span class="pc bpc" id="L74" title="2 of 6 branches missed.">        if (finalresult.size() == 0 &amp;&amp; source == null &amp;&amp; destination == null) {</span>
+<span class="fc" id="L75">            finalresult.add(&quot;No flights with Airline &quot;);</span>
+<span class="pc bpc" id="L76" title="5 of 6 branches missed.">        } else if (finalresult.size() == 0 &amp;&amp; source != null &amp;&amp; destination != null) {</span>
+<span class="nc" id="L77">            finalresult.add(&quot;No flights with Source &quot; + source + &quot; and destination &quot; + destination + &quot; from Airline &quot;);</span>
+        }
+
+
+<span class="fc" id="L81">        ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, finalresult) {</span>
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                // Get the current item from ListView
+<span class="fc" id="L85">                View view = super.getView(position, convertView, parent);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">                if (position % 2 == 1) {</span>
+                    // Set a background color for ListView regular row/item
+<span class="fc" id="L88">                    view.setBackgroundColor(Color.parseColor(&quot;#58FAD0&quot;));</span>
+                } else {
+                    // Set the background color for alternate row/item
+<span class="fc" id="L91">                    view.setBackgroundColor(Color.parseColor(&quot;#F2F5A9&quot;));</span>
+                }
+<span class="fc" id="L93">                return view;</span>
+            }
+        };
+<span class="fc" id="L96">        listView.setAdapter(arrayAdapter);</span>
+<span class="fc" id="L97">    }</span>
+
+    /**
+     * createAlert creates Alert Dialog incase of error
+     *
+     * @param msg is the message to be displayed incase of error
+     */
+    public void createAlert(String msg) {
+<span class="fc" id="L105">        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);</span>
+<span class="fc" id="L106">        builder1.setMessage(msg);</span>
+<span class="fc" id="L107">        builder1.setCancelable(true);</span>
+<span class="fc" id="L108">        AlertDialog alert11 = builder1.create();</span>
+<span class="fc" id="L109">        alert11.show();</span>
+<span class="fc" id="L110">    }</span>
+
+    /**
+     * onCreateOptionsMenu is used to open Help Menu
+     *
+     * @param menu Menu option
+     * @return boolean
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+<span class="fc" id="L120">        MenuInflater inflater = getMenuInflater();</span>
+<span class="fc" id="L121">        inflater.inflate(R.menu.help_menu, menu);</span>
+<span class="fc" id="L122">        return true;</span>
+    }
+
+    /**
+     * onOptionsItemSelected is used to display the Help Menu
+     *
+     * @param item is selected menu item
+     * @return boolean
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+<span class="fc bfc" id="L133" title="All 2 branches covered.">        if (item.getItemId() == R.id.readme) {</span>
+<span class="fc" id="L134">            Intent thirdpage = new Intent(getApplicationContext(), README.class);</span>
+<span class="fc" id="L135">            startActivity(thirdpage);</span>
+        }
+<span class="fc" id="L137">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Generated by the Android Gradle plugin 3.6.1</div></body></html>

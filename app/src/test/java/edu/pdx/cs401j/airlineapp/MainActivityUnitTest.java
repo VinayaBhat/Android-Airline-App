@@ -1,25 +1,15 @@
 package edu.pdx.cs401j.airlineapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import org.checkerframework.checker.units.qual.A;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.Shadows;
@@ -27,16 +17,10 @@ import org.robolectric.annotation.Config;
 import org.robolectric.fakes.RoboMenuItem;
 import org.robolectric.shadows.ShadowActivity;
 import org.robolectric.shadows.ShadowAlertDialog;
-import org.robolectric.shadows.ShadowDialog;
-import org.robolectric.shadows.ShadowIntent;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.timeout;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
 import static org.robolectric.Shadows.shadowOf;
 
 /**
@@ -68,26 +52,34 @@ public class MainActivityUnitTest{
         prettyPrint = (Button) activity.findViewById(R.id.PP);
     }
 
+    /**
+     * Add Flight navigates to next page
+     */
     @Test
-    public void open_AddNewFlightPage(){
+    public void AddFlight_NextActivity_Success(){
         AddFlight.performClick();
-        Intent expectedIntent = new Intent(activity, Main2Activity.class);
+        Intent expectedIntent = new Intent(activity, AddFlightPage.class);
         ShadowActivity shadowActivity = Shadows.shadowOf(activity);
         Intent actualIntent = shadowActivity.getNextStartedActivity();
         assertTrue(actualIntent.filterEquals(expectedIntent));
     }
 
+    /**
+     * Search Flight with no input
+     */
     @Test
-    public void NoInput_Search() {
+    public void SearchFlight_NoInput_Error() {
         SearchFlight.performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertTrue(dialog.isShowing());
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Airline Name not provided"));
     }
-
+    /**
+     * Search Flight with dummy airline
+     */
     @Test
-    public void AirlineName_NotPresent_Search() {
+    public void SearchFlight_DummyAirline_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         SearchFlight.performClick();
@@ -96,9 +88,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Airline not found in App. Please check Airline Name entered"));
     }
-
+    /**
+     * Search Flight with no destination
+     */
     @Test
-    public void AirlineNameSrc_DestNotPresent_Search() {
+    public void SearchFlight_NoDestination_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -110,9 +104,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code is given but destination code is not given."));
     }
-
+    /**
+     * Search Flight with no source
+     */
     @Test
-    public void AirlineNameDest_SrcNotPresent_Search() {
+    public void SearchFlight_NoSource_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -124,9 +120,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code is not given but destination code is given."));
     }
-
+    /**
+     * Search Flight with invalid source
+     */
     @Test
-    public void AirlineName_InvalidSrc_Search() {
+    public void SearchFlight_InvalidSource_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -139,9 +137,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code not valid!"));
     }
-
+    /**
+     * Search Flight with invalid destination
+     */
     @Test
-    public void AirlineName_InvalidDest_Search() {
+    public void SearchFlight_InvalidDestination_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -154,18 +154,22 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Destination Code not valid!"));
     }
-
+    /**
+     * Pretty Print Search Flight with no input
+     */
     @Test
-    public void NoInput_PrettyPrint() {
+    public void PrettyPrintSearchFlight_NoInput_Error() {
         prettyPrint.performClick();
         AlertDialog dialog = ShadowAlertDialog.getLatestAlertDialog();
         assertTrue(dialog.isShowing());
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Airline Name not provided"));
     }
-
+    /**
+     * Pretty Print Search Flight with dummy airline
+     */
     @Test
-    public void AirlineName_NotPresent_PrettyPrint() {
+    public void PrettyPrintSearchFlight_DummyAirline_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         prettyPrint.performClick();
@@ -174,9 +178,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Airline not found in App. Please check Airline Name entered"));
     }
-
+    /**
+     * Pretty Print Search Flight with no destination
+     */
     @Test
-    public void AirlineNameSrc_DestNotPresent_PrettyPrint() {
+    public void PrettyPrintSearchFlight_NoDestination_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -188,9 +194,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code is given but destination code is not given."));
     }
-
+    /**
+     * Pretty Print Search Flight with no source
+     */
     @Test
-    public void AirlineNameDest_SrcNotPresent_PrettyPrint() {
+    public void PrettyPrintSearchFlight_NoSource_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -202,9 +210,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code is not given but destination code is given."));
     }
-
+    /**
+     * Pretty Print Search Flight with invalid source
+     */
     @Test
-    public void AirlineName_InvalidSrc_PrettyPrint() {
+    public void PrettyPrintSearchFlight_InvalidSource_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -217,9 +227,11 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Source Code not valid!"));
     }
-
+    /**
+     * Pretty Print Search Flight with invalid destination
+     */
     @Test
-    public void AirlineName_InvalidDest_PrettyPrint() {
+    public void PrettyPrintSearchFlight_InvalidDestination_Error() {
         AirlineName=(EditText) activity.findViewById(R.id.AirlineNameField);
         AirlineName.setText("DummyAirline");
         Src=(EditText) activity.findViewById(R.id.SourceField);
@@ -232,7 +244,9 @@ public class MainActivityUnitTest{
         ShadowAlertDialog sAlert = shadowOf(dialog);
         assertThat(sAlert.getMessage().toString(),equalTo("Destination Code not valid!"));
     }
-
+    /**
+     * Help Menu Test
+     */
     @Test
     public void helpTest(){
         MenuItem menuItem = new RoboMenuItem(R.menu.help_menu);

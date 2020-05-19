@@ -1,29 +1,24 @@
 package edu.pdx.cs401j.airlineapp;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Main3Activity extends AppCompatActivity {
+public class SearchFlight extends AppCompatActivity {
     Context context = this;
 
     @Override
@@ -38,7 +33,7 @@ public class Main3Activity extends AppCompatActivity {
         Button search = (Button) findViewById(R.id.PrettyPrint);
         search.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent thirdpage = new Intent(getApplicationContext(), SearchResult.class);
+                Intent thirdpage = new Intent(getApplicationContext(), PrettyPrintSearchFlight.class);
                 thirdpage.putExtra("airline", getIntent().getStringArrayListExtra("airline"));
                 thirdpage.putExtra("src", getIntent().getStringExtra("src"));
                 thirdpage.putExtra("dest", getIntent().getStringExtra("dest"));
@@ -88,6 +83,11 @@ public class Main3Activity extends AppCompatActivity {
 
     }
 
+    /**
+     * createAlert creates Alert Dialog incase of error
+     *
+     * @param msg is the message to be displayed incase of error
+     */
     public void createAlert(String msg) {
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
         builder1.setMessage(msg);
@@ -96,6 +96,12 @@ public class Main3Activity extends AppCompatActivity {
         alert11.show();
     }
 
+    /**
+     * onCreateOptionsMenu is used to open Help Menu
+     *
+     * @param menu Menu option
+     * @return boolean
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -103,6 +109,12 @@ public class Main3Activity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * onOptionsItemSelected is used to display the Help Menu
+     *
+     * @param item is selected menu item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.readme) {

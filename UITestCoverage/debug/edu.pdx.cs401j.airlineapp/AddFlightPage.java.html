@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AddFlightPage.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">edu.pdx.cs401j.airlineapp</a> &gt; <span class="el_source">AddFlightPage.java</span></div><h1>AddFlightPage.java</h1><pre class="source lang-java linenums">package edu.pdx.cs401j.airlineapp;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Instrumentation;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+
+<span class="fc" id="L25">public class AddFlightPage extends AppCompatActivity {</span>
+<span class="fc" id="L26">    Context context = this;</span>
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="fc" id="L30">        super.onCreate(savedInstanceState);</span>
+<span class="fc" id="L31">        setContentView(R.layout.activity_main2);</span>
+        // Adds new flight to AirlineName.txt file
+<span class="fc" id="L33">        Button addflight = (Button) findViewById(R.id.AddFlight);</span>
+<span class="fc" id="L34">        addflight.setOnClickListener(new View.OnClickListener() {</span>
+
+            @Override
+            public void onClick(View v) {
+<span class="fc" id="L38">                EditText airlinename = (EditText) findViewById(R.id.AirlineNameField);</span>
+<span class="fc" id="L39">                String aname = airlinename.getText().toString();</span>
+<span class="fc" id="L40">                EditText flightnum = (EditText) findViewById(R.id.FlightNumber);</span>
+<span class="fc" id="L41">                String fnum = flightnum.getText().toString();</span>
+<span class="fc" id="L42">                EditText source = (EditText) findViewById(R.id.Source);</span>
+<span class="fc" id="L43">                String src = source.getText().toString();</span>
+<span class="fc" id="L44">                EditText depdate = (EditText) findViewById(R.id.DepDate);</span>
+<span class="fc" id="L45">                String ddate = depdate.getText().toString();</span>
+<span class="fc" id="L46">                EditText deptime = (EditText) findViewById(R.id.DepTime);</span>
+<span class="fc" id="L47">                String dtime = deptime.getText().toString();</span>
+<span class="fc" id="L48">                EditText destination = (EditText) findViewById(R.id.Destination);</span>
+<span class="fc" id="L49">                String dest = destination.getText().toString();</span>
+<span class="fc" id="L50">                EditText arrivaldate = (EditText) findViewById(R.id.ArrivalDate);</span>
+<span class="fc" id="L51">                String adate = arrivaldate.getText().toString();</span>
+<span class="fc" id="L52">                EditText arrivaltime = (EditText) findViewById(R.id.ArrivalTime);</span>
+<span class="fc" id="L53">                String atime = arrivaltime.getText().toString();</span>
+                try {
+<span class="fc" id="L55">                    Airline a1 = new Airline(aname);</span>
+<span class="fc" id="L56">                    Flight f1 = new Flight(fnum);</span>
+<span class="fc" id="L57">                    f1.setSource(src);</span>
+<span class="fc" id="L58">                    f1.setDeparture_time(ddate, dtime);</span>
+<span class="fc" id="L59">                    f1.setDestination(dest);</span>
+<span class="fc" id="L60">                    f1.setArrival_time(adate, atime);</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">                    if (!Flight.checkarranddepdate(f1.getDepartureString(), f1.getArrivalString())) {</span>
+<span class="fc" id="L62">                        throw new Exception(&quot;Arrival date or time is not before departure date or time&quot;);</span>
+                    }
+<span class="fc" id="L64">                    writeFile(aname, f1);</span>
+
+<span class="fc" id="L66">                } catch (Exception e) {</span>
+<span class="fc" id="L67">                    AlertDialog.Builder builder1 = new AlertDialog.Builder(context);</span>
+<span class="fc" id="L68">                    builder1.setMessage(e.getMessage());</span>
+<span class="fc" id="L69">                    builder1.setCancelable(true);</span>
+<span class="fc" id="L70">                    AlertDialog alert11 = builder1.create();</span>
+<span class="fc" id="L71">                    alert11.show();</span>
+<span class="fc" id="L72">                }</span>
+<span class="fc" id="L73">            }</span>
+        });
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Writes the flight information to Airline file.
+     *
+     * @param aname Airline Name
+     * @param f1    Flight information
+     * @throws IOException
+     */
+    public void writeFile(String aname, Flight f1) throws IOException {
+<span class="fc" id="L85">        File file = new File(context.getFilesDir(), aname + &quot;.txt&quot;);</span>
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        if (file.exists()) {</span>
+<span class="fc" id="L87">            System.out.println(&quot;File exists &quot; + context.getFilesDir());</span>
+<span class="fc" id="L88">            FileWriter writer = new FileWriter(file, true);</span>
+<span class="fc" id="L89">            writer.write(aname + &quot;;&quot; + f1.getNumber() + &quot;;&quot; + f1.getSource() + &quot;;&quot; + f1.getDepartureString() + &quot;;&quot; + f1.getDestination() + &quot;;&quot; + f1.getArrivalString() + System.getProperty(&quot;line.separator&quot;));</span>
+<span class="fc" id="L90">            writer.close();</span>
+<span class="fc" id="L91">            Toast.makeText(this, &quot;Flight has been added..&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="fc" id="L92">        } else {</span>
+<span class="fc" id="L93">            System.out.println(&quot;File doesnt exits &quot;);</span>
+<span class="fc" id="L94">            file.createNewFile();</span>
+<span class="fc" id="L95">            FileWriter writer = new FileWriter(file, true);</span>
+<span class="fc" id="L96">            writer.write(aname + &quot;;&quot; + f1.getNumber() + &quot;;&quot; + f1.getSource() + &quot;;&quot; + f1.getDepartureString() + &quot;;&quot; + f1.getDestination() + &quot;;&quot; + f1.getArrivalString() + System.getProperty(&quot;line.separator&quot;));</span>
+<span class="fc" id="L97">            writer.close();</span>
+<span class="fc" id="L98">            Toast.makeText(this, &quot;Flight has been added..&quot;, Toast.LENGTH_SHORT).show();</span>
+        }
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Loading the help menu
+     *
+     * @param menu Menu items
+     * @return boolean
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+<span class="fc" id="L110">        MenuInflater inflater = getMenuInflater();</span>
+<span class="fc" id="L111">        inflater.inflate(R.menu.help_menu, menu);</span>
+<span class="fc" id="L112">        return true;</span>
+    }
+
+    /**
+     * Selecting readme option
+     * @param item Menu item
+     * @return boolean
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (item.getItemId() == R.id.readme) {</span>
+<span class="fc" id="L123">            Intent thirdpage = new Intent(getApplicationContext(), README.class);</span>
+<span class="fc" id="L124">            startActivity(thirdpage);</span>
+        }
+<span class="fc" id="L126">        return true;</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span>Generated by the Android Gradle plugin 3.6.1</div></body></html>

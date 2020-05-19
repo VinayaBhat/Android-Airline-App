@@ -30,6 +30,10 @@ public class ReadMeTest {
     public void setUp(){
         activity=main2activity.getActivity();
     }
+
+    /**
+     * Help Menu Test
+     */
     @Test
     public void helpTest(){
         Instrumentation.ActivityMonitor monitor=getInstrumentation().addMonitor(README.class.getName(),null,false);

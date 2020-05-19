@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".README"></activity>
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".SearchResult" />
-        <activity android:name=".Main2Activity" />
+        <activity android:name=".SearchFlight" />
+        <activity android:name=".PrettyPrintSearchFlight" />
+        <activity android:name=".AddFlightPage" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
