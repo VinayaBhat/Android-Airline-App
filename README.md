@@ -4,7 +4,7 @@ User can enter Airline and Flight information by clicking the Add Flight Button.
 User can search for flights given Airline name, (optional) source and destination.The user can use the Search Flight Button or Pretty Print Button (which pretty prints the output).</br>
 The HELP option redirects to a README page. 
 
-![Screenshot](screenshot.png)
+![Screenshot](Screenshot.png)
 
 ## Unit Testing
 ### Code Coverage: 91.6%
