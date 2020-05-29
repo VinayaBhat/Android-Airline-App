@@ -65,11 +65,7 @@ public class FlightTest {
         flight.setDeparture_time("1/20/2020", "11:30 am");
         flight.setArrival_time("1/21/2020", "10:30 am");
 
-        assertThat(flight.getNumber(), equalTo(5));
-        assertThat(flight.getSource(), equalTo("JFK"));
-        assertThat(flight.getDestination(), equalTo("PDX"));
-        assertThat(flight.getArrivalString(), equalTo("1/21/20 10:30 AM"));
-        assertThat(flight.getDepartureString(), equalTo("1/20/20 11:30 AM"));
+        assertThat(flight.toString(),equalTo("Flight 5 departs JFK at 1/20/20 11:30 AM arrives PDX at 1/21/20 10:30 AM"));
     }
 
     /**
