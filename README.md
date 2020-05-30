@@ -14,7 +14,7 @@ The HELP option redirects to a README page.
 Used Robolectric framework to write unit tests *( http://robolectric.org/ )*</br>
 Code Coverage Files Found under UnitTestCoverage
 
-<img src="unittest.PNG" alt="unit test report" width="400" height="200"/>
+<img src="unittest.PNG" alt="unit test report"/>
 
 
 ## Android Test (UI Test)
@@ -24,4 +24,4 @@ Code Coverage Files Found under UnitTestCoverage
 Used Espresso framework to write UI tests. *(https://developer.android.com/training/testing/espresso)*</br>
 Code Coverage Files Found under UITestCoverage
 
-<img src="UI.PNG" alt="UI test report" width="400" height="200"/>
+<img src="UI.PNG" alt="UI test report" />
